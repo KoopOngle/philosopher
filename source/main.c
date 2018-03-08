@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
-
+#include "extern.h"
 #include "philo.h"
 
 void printUsage()
@@ -44,6 +44,7 @@ int main(int argc, char** argv)
 	int nb_eat = 0;
 	philo_t *table;
 
+	RCFStartup(argc, argv);
 	if (argc < 5 || !isdigit(argv[2][0]) || !isdigit(argv[4][0]))
 		printUsage();
 	check_args(argv, &nb_eat, &nb_philo);
@@ -52,5 +53,6 @@ int main(int argc, char** argv)
 		return (84);
 	launch_threads(table, nb_philo);
 	join_threads(table, nb_philo);
+	RCFCleanup();
 	return (0);
 }

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
+#include "extern.h"
 #include "philo.h"
 
 philo_t *create_philo(int nb_eat)
@@ -19,6 +20,7 @@ philo_t *create_philo(int nb_eat)
 	if (!philo)
 		return (NULL);
 	philo->nb = nb_eat;
+	philo->state = RESTED;
 	philo->stick = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	philo->next = NULL;
 	return (philo);
@@ -33,20 +35,13 @@ philo_t *create_table(int nb_philo, int nb_eat)
 	if (!ret)
 		return (NULL);
 	while (++i < nb_philo - 1) {
-		tmp->next = create_philo(nb_eat);
+		tmp->next = create_philo(nb_eat, i);
 		if (!tmp->next)
 			return (NULL);
 		tmp = tmp->next;
 	}
 	tmp->next = ret;
 	return (ret);
-}
-
-void *live(void *arg)
-{
-	philo_t *philo = (philo_t*)arg;
-
-
 }
 
 void launch_threads(philo_t *list, int nb_philo)

@@ -11,12 +11,18 @@
 #include <pthread.h>
 
 typedef struct philo_s {
+	typedef enum philo_state {
+		RESTED,
+		TIRED
+	};
+	philo_state state;
 	unsigned int nb;
 	pthread_mutex_t stick;
 	pthread_t thread;
 	struct philo_s *next;
 } philo_t;
 
+void *live(void *);
 philo_t *create_philo(int);
 philo_t *create_table(int, int);
 void launch_threads(philo_t*, int);
