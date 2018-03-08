@@ -39,7 +39,7 @@ static void eat(philo_t *philo)
 	philo->nb -= 1;
 }
 
-static void doAction(philo_t *philo)x
+static void doAction(philo_t *philo)
 {
 	int left;
 	int right;

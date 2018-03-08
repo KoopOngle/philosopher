@@ -10,7 +10,7 @@
  * None of thoses functions will do your job!
  * Thoses are entry points for the Referee.
  * mutex_id parameter of lphilo_[take/release]_chopstick functions
- * is the pointer of the (const) mutex you use to handle 
+ * is the pointer of the (const) mutex you use to handle
  * the current chopstick.
  */
 
