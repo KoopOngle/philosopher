@@ -13,6 +13,8 @@ CFLAGS		+=		-I./include
 
 CFLAGS		+=		$(DEBUG)
 
+LDFLAGS		+=		-lpthread
+
 NAME		=		philo
 
 SRCDIR		=		source

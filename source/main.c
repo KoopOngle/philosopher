@@ -50,5 +50,7 @@ int main(int argc, char** argv)
 	table = create_table(nb_philo, nb_eat);
 	if (!table)
 		return (84);
+	launch_threads(table, nb_philo);
+	join_threads(table, nb_philo);
 	return (0);
 }

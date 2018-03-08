@@ -19,5 +19,7 @@ typedef struct philo_s {
 
 philo_t *create_philo(int);
 philo_t *create_table(int, int);
+void launch_threads(philo_t*, int);
+void join_threads(philo_t*, int);
 
 #endif /* !PHILO_H_ */

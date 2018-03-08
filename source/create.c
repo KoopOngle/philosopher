@@ -5,8 +5,11 @@
 ** create and initialize
 */
 
-#include "philo.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <unistd.h>
+#include "philo.h"
 
 philo_t *create_philo(int nb_eat)
 {
@@ -37,4 +40,37 @@ philo_t *create_table(int nb_philo, int nb_eat)
 	}
 	tmp->next = ret;
 	return (ret);
+}
+
+void *live(void *arg)
+{
+	philo_t *philo = (philo_t*)arg;
+
+
+}
+
+void launch_threads(philo_t *list, int nb_philo)
+{
+	philo_t *tmp = list;
+
+	for (int i = 0; i < nb_philo; i++)
+	{
+		if(pthread_create(&(tmp->thread), NULL, live, (void*)tmp)) {
+			fprintf(stderr, "error\n");
+			return;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void join_threads(philo_t *list, int nb_philo)
+{
+	philo_t *tmp = list;
+
+	for (int i = 0; i < nb_philo; i++)
+	{
+		if(pthread_join(tmp->thread, NULL))
+			perror("error : ");
+		tmp = tmp->next;
+	}
 }
