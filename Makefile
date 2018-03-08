@@ -7,20 +7,20 @@
 
 CC		=		gcc
 
-CFLAGS		+=		-W -Wall -Wextra
+CFLAGS		+=		-W -Wall -Wextra -g
 
 CFLAGS		+=		-I./include
 
 CFLAGS		+=		$(DEBUG)
-
-LDFLAGS		=		
 
 NAME		=		philo
 
 SRCDIR		=		source
 
 SRCS		=		$(addprefix $(SRCDIR)/,	\
+				create.c		\
 				main.c)
+
 OBJDIR		=		build
 
 OBJS		=		$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o,  $(SRCS))
