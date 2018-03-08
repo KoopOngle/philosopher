@@ -10,11 +10,12 @@
 
 #include <pthread.h>
 
+typedef enum {
+	RESTED,
+	TIRED
+} philo_state;
+
 typedef struct philo_s {
-	typedef enum philo_state {
-		RESTED,
-		TIRED
-	};
 	philo_state state;
 	unsigned int nb;
 	pthread_mutex_t stick;

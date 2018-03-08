@@ -10,16 +10,37 @@
 #include "extern.h"
 #include "philo.h"
 
-void *live(void *arg)
+static void philo_sleep(philo_t *philo)
 {
-	philo_t *philo = (philo_t*)arg;
-
-	while (philo->nb > 0) {
-		doAction(philo);
-	}
+	lphilo_sleep();
+	philo->state = RESTED;
 }
 
-void doAction(philo_t *philo) {
+static void think(pthread_mutex_t *mutex)
+{
+	lphilo_take_chopstick(mutex);
+	lphilo_think();
+	usleep(rand() % 500);
+	if (pthread_mutex_unlock(mutex))
+		lphilo_release_chopstick(mutex);
+}
+
+static void eat(philo_t *philo)
+{
+	lphilo_take_chopstick(&(philo->stick));
+	lphilo_take_chopstick(&(philo->next->stick));
+	lphilo_eat();
+	usleep(rand() % 500);
+	if (pthread_mutex_unlock(&(philo->stick)) == 0)
+		lphilo_release_chopstick(&(philo->stick));
+	if (pthread_mutex_unlock(&(philo->next->stick)) == 0)
+		lphilo_release_chopstick(&(philo->next->stick));
+	philo->state = TIRED;
+	philo->nb -= 1;
+}
+
+static void doAction(philo_t *philo)x
+{
 	int left;
 	int right;
 
@@ -32,35 +53,17 @@ void doAction(philo_t *philo) {
 			think(&(philo->next->stick));
 		else if (left == 0 && right == 0){
 			eat(philo);
-	} else {
-			sleep(philo);
+		}
+	} else
+		philo_sleep(philo);
+}
+
+void *live(void *arg)
+{
+	philo_t *philo = (philo_t*)arg;
+
+	while (philo->nb > 0) {
+		doAction(philo);
 	}
-}
-
-void sleep(philo_t *philo)
-{
-	lphilo_sleep();
-	philo->state = RESTED;
-}
-
-void think(pthread_mutex_t *mutex)
-{
-	lphilo_take_chopstick(mutex);
-	lphilo_think();
-	usleep(rand() % 500);
-	if (pthread_mutex_unlock(mutex))
-		lphilo_release_chopstick(mutex);
-}
-
-void eat(philo_t *philo)
-{
-	lphilo_take_chopstick(&(philo->stick));
-	lphilo_take_chopstick(&(philo->next->stick))
-	lphilo_eat();
-	usleep(rand() % 500);
-	if (pthread_mutex_unlock(&(philo->stick)) == 0)
-		lphilo_release_chopstick(&(philo->stick));
-	if (pthread_mutex_unlock(&(philo->next->stick)) == 0)
-		lphilo_release_chopstick(&(philo->next->stick))
-	philo->state = TIRED;
+	return (NULL);
 }

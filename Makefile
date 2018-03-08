@@ -7,13 +7,13 @@
 
 CC		=		gcc
 
-CFLAGS		+=		-W -Wall -Wextra -g
+CFLAGS		+=		-W -Wall -Wextra -g3
 
 CFLAGS		+=		-I./include
 
 CFLAGS		+=		$(DEBUG)
 
-LDFLAGS		+=		-lpthread
+LDFLAGS		+=		-L. -lpthread -lriceferee
 
 NAME		=		philo
 
@@ -21,6 +21,7 @@ SRCDIR		=		source
 
 SRCS		=		$(addprefix $(SRCDIR)/,	\
 				create.c		\
+				live.c			\
 				main.c)
 
 OBJDIR		=		build

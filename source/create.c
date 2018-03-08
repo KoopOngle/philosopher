@@ -20,7 +20,7 @@ philo_t *create_philo(int nb_eat)
 	if (!philo)
 		return (NULL);
 	philo->nb = nb_eat;
-	philo->state = RESTED;
+	philo->state = TIRED;
 	philo->stick = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	philo->next = NULL;
 	return (philo);
@@ -35,7 +35,7 @@ philo_t *create_table(int nb_philo, int nb_eat)
 	if (!ret)
 		return (NULL);
 	while (++i < nb_philo - 1) {
-		tmp->next = create_philo(nb_eat, i);
+		tmp->next = create_philo(nb_eat);
 		if (!tmp->next)
 			return (NULL);
 		tmp = tmp->next;
