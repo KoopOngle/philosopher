@@ -29,8 +29,15 @@ static void think(philo_t *philo)
 
 static void eat(philo_t *philo)
 {
-	pthread_mutex_lock(&(philo->stick));
-	pthread_mutex_lock(&(philo->next->stick));
+	int a = pthread_mutex_trylock(&(philo->stick));
+	int b = pthread_mutex_trylock(&(philo->next->stick));
+	if (a != 0 || b != 0) {
+		if (a == 0)
+			pthread_mutex_unlock(&(philo->stick));
+		else
+			pthread_mutex_unlock(&(philo->next->stick));
+		return;
+	}
 	lphilo_take_chopstick(&(philo->stick));
 	lphilo_take_chopstick(&(philo->next->stick));
 	lphilo_eat();
