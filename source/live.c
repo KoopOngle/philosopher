@@ -47,10 +47,13 @@ static void doAction(philo_t *philo)
 	switch (philo->state) {
 		case TIRED:
 			philo_sleep(philo);
+			break;
 		case RESTED:
 			think(philo);
+			break;
 		case HUNGRY:
 			eat(philo);
+			break;
 	}
 }
 
