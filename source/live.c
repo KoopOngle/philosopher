@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "extern.h"
 #include "philo.h"
 
@@ -16,13 +17,13 @@ static void philo_sleep(philo_t *philo)
 	philo->state = RESTED;
 }
 
-static void think(pthread_mutex_t *mutex)
+static void think(philo_t *philo)
 {
-	lphilo_take_chopstick(mutex);
+	lphilo_take_chopstick(&(philo->stick));
 	lphilo_think();
 	usleep(rand() % 500);
-	if (pthread_mutex_unlock(mutex))
-		lphilo_release_chopstick(mutex);
+	if (pthread_mutex_unlock(&(philo->stick)) == 0)
+		lphilo_release_chopstick(&(philo->stick));
 }
 
 static void eat(philo_t *philo)
@@ -48,9 +49,9 @@ static void doAction(philo_t *philo)
 		left = pthread_mutex_trylock(&(philo->stick));
 		right = pthread_mutex_trylock(&(philo->next->stick));
 		if (left == 0 && right != 0)
-			think(&(philo->stick));
+			think(philo);
 		else if (left != 0 && right == 0)
-			think(&(philo->next->stick));
+			think(philo->next);
 		else if (left == 0 && right == 0){
 			eat(philo);
 		}

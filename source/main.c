@@ -23,15 +23,15 @@ void printUsage()
 
 void check_args(char **argv, int *nb_eat, int *nb_philo)
 {
-	if (strcmp(argv[1],"-e"))
+	if (strcmp(argv[1],"-e") == 0)
 		*nb_eat = atoi(argv[2]);
-	else if (strcmp(argv[1],"-p"))
+	else if (strcmp(argv[1],"-p") == 0)
 		*nb_philo = atoi(argv[2]);
 	else
 		printUsage();
-	if (strcmp(argv[3],"-e"))
+	if (strcmp(argv[3],"-e") == 0)
 		*nb_eat = atoi(argv[4]);
-	else if (strcmp(argv[3],"-p"))
+	else if (strcmp(argv[3],"-p") == 0)
 		*nb_philo = atoi(argv[4]);
 	else
 		printUsage();
@@ -48,6 +48,7 @@ int main(int argc, char** argv)
 	if (argc < 5 || !isdigit(argv[2][0]) || !isdigit(argv[4][0]))
 		printUsage();
 	check_args(argv, &nb_eat, &nb_philo);
+	printf("eat : %d,philo : %d", nb_eat, nb_philo);
 	table = create_table(nb_philo, nb_eat);
 	if (!table)
 		return (84);

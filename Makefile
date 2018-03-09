@@ -13,7 +13,7 @@ CFLAGS		+=		-I./include
 
 CFLAGS		+=		$(DEBUG)
 
-LDFLAGS		+=		-L. -lpthread -lriceferee
+LDFLAGS		+=		-L. -lriceferee -lpthread
 
 NAME		=		philo
 
