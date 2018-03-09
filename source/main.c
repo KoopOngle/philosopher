@@ -48,7 +48,6 @@ int main(int argc, char** argv)
 	if (argc < 5 || !isdigit(argv[2][0]) || !isdigit(argv[4][0]))
 		printUsage();
 	check_args(argv, &nb_eat, &nb_philo);
-	printf("eat : %d,philo : %d", nb_eat, nb_philo);
 	table = create_table(nb_philo, nb_eat);
 	if (!table)
 		return (84);
