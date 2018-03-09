@@ -19,19 +19,21 @@ static void philo_sleep(philo_t *philo)
 
 static void think(philo_t *philo)
 {
+	pthread_mutex_lock(&(philo->stick));
 	lphilo_take_chopstick(&(philo->stick));
 	lphilo_think();
-	usleep(rand() % 500);
 	if (pthread_mutex_unlock(&(philo->stick)) == 0)
 		lphilo_release_chopstick(&(philo->stick));
+	philo->state = HUNGRY;
 }
 
 static void eat(philo_t *philo)
 {
+	pthread_mutex_lock(&(philo->stick));
+	pthread_mutex_lock(&(philo->next->stick));
 	lphilo_take_chopstick(&(philo->stick));
 	lphilo_take_chopstick(&(philo->next->stick));
 	lphilo_eat();
-	usleep(rand() % 500);
 	if (pthread_mutex_unlock(&(philo->stick)) == 0)
 		lphilo_release_chopstick(&(philo->stick));
 	if (pthread_mutex_unlock(&(philo->next->stick)) == 0)
@@ -42,21 +44,14 @@ static void eat(philo_t *philo)
 
 static void doAction(philo_t *philo)
 {
-	int left;
-	int right;
-
-	if (philo->state == RESTED) {
-		left = pthread_mutex_trylock(&(philo->stick));
-		right = pthread_mutex_trylock(&(philo->next->stick));
-		if (left == 0 && right != 0)
+	switch (philo->state) {
+		case TIRED:
+			philo_sleep(philo);
+		case RESTED:
 			think(philo);
-		else if (left != 0 && right == 0)
-			think(philo->next);
-		else if (left == 0 && right == 0){
+		case HUNGRY:
 			eat(philo);
-		}
-	} else
-		philo_sleep(philo);
+	}
 }
 
 void *live(void *arg)

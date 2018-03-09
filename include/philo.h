@@ -12,7 +12,8 @@
 
 typedef enum {
 	RESTED,
-	TIRED
+	TIRED,
+	HUNGRY
 } philo_state;
 
 typedef struct philo_s {
