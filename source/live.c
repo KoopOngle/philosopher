@@ -19,18 +19,21 @@ static void philo_sleep(philo_t *philo)
 
 static void think(philo_t *philo)
 {
-	pthread_mutex_lock(&(philo->stick));
-	lphilo_take_chopstick(&(philo->stick));
-	lphilo_think();
-	if (pthread_mutex_unlock(&(philo->stick)) == 0)
-		lphilo_release_chopstick(&(philo->stick));
-	philo->state = HUNGRY;
+	int a = pthread_mutex_trylock(&(philo->stick));
+	if (a == 0) {
+		lphilo_take_chopstick(&(philo->stick));
+		lphilo_think();
+		if (pthread_mutex_unlock(&(philo->stick)) == 0)
+			lphilo_release_chopstick(&(philo->stick));
+		philo->state = HUNGRY;
+	}
 }
 
 static void eat(philo_t *philo)
 {
-	int a = pthread_mutex_trylock(&(philo->stick));
 	int b = pthread_mutex_trylock(&(philo->next->stick));
+	int a = pthread_mutex_trylock(&(philo->stick));
+
 	if (a != 0 || b != 0) {
 		if (a == 0)
 			pthread_mutex_unlock(&(philo->stick));
