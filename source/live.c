@@ -20,6 +20,7 @@ static void philo_sleep(philo_t *philo)
 static void think(philo_t *philo)
 {
 	int a = pthread_mutex_trylock(&(philo->stick));
+
 	if (a == 0) {
 		lphilo_take_chopstick(&(philo->stick));
 		lphilo_think();
@@ -52,7 +53,7 @@ static void eat(philo_t *philo)
 	philo->nb -= 1;
 }
 
-static void doAction(philo_t *philo)
+static void do_action(philo_t *philo)
 {
 	switch (philo->state) {
 		case TIRED:
@@ -72,7 +73,7 @@ void *live(void *arg)
 	philo_t *philo = (philo_t*)arg;
 
 	while (philo->nb > 0) {
-		doAction(philo);
+		do_action(philo);
 	}
 	return (NULL);
 }
